@@ -21,3 +21,7 @@ brew trust jnersn/tap
 Formulas build from the tagged release source, so installing needs Xcode or
 the Command Line Tools. A scheduled workflow updates each formula when its
 project publishes a new release.
+
+## License
+
+MIT. See [LICENSE](LICENSE).
