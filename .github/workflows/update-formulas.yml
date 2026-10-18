@@ -1,0 +1,43 @@
+name: Update formulas
+
+# Checks each formula's project for a newer GitHub release and, if there is
+# one, points the formula at the new tag's source tarball and commits.
+on:
+  schedule:
+    - cron: "17 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 1
+      matrix:
+        include:
+          - formula: store-previews
+            repo: jnersn/store-previews
+    steps:
+      - uses: actions/checkout@v4
+      - name: Update ${{ matrix.formula }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          FORMULA: Formula/${{ matrix.formula }}.rb
+          REPO: ${{ matrix.repo }}
+        run: |
+          set -eu
+          git pull --ff-only
+          tag=$(gh release view --repo "$REPO" --json tagName --jq .tagName)
+          url="https://github.com/$REPO/archive/refs/tags/$tag.tar.gz"
+          if grep -qF "url \"$url\"" "$FORMULA"; then
+            echo "$FORMULA is already at $tag"
+            exit 0
+          fi
+          sha=$(curl -fsSL "$url" | sha256sum | cut -d' ' -f1)
+          sed -i -E "s|^  url \".*\"|  url \"$url\"|; s|^  sha256 \".*\"|  sha256 \"$sha\"|" "$FORMULA"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "${{ matrix.formula }} $tag"
+          git push
