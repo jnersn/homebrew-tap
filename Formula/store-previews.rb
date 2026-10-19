@@ -1,8 +1,8 @@
 class StorePreviews < Formula
   desc "Render App Store preview images from screenshots and a JSON config"
   homepage "https://github.com/jnersn/store-previews"
-  url "https://github.com/jnersn/store-previews/archive/refs/tags/0.1.0.tar.gz"
-  sha256 "a94383539f06b42d28a2a341552c05c962d481d08dd90fb4eb78fe3dd11137c7"
+  url "https://github.com/jnersn/store-previews/archive/refs/tags/0.2.0.tar.gz"
+  sha256 "5e812ead314d3912434af6d20ecbacdcd1cc2a22cb365f2fb33a93b20704ba48"
   license "MIT"
   head "https://github.com/jnersn/store-previews.git", branch: "main"
 
