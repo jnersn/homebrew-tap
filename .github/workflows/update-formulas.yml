@@ -19,6 +19,8 @@ jobs:
         include:
           - formula: store-previews
             repo: jnersn/store-previews
+          - formula: web-brand-assets
+            repo: jnersn/web-brand-assets
     steps:
       - uses: actions/checkout@v4
       - name: Update ${{ matrix.formula }}
